@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UiService } from 'src/app/services/ui.service';
 import { Task } from 'src/app/Task';
@@ -8,7 +8,7 @@ import { Task } from 'src/app/Task';
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.css']
 })
-export class AddTaskComponent implements OnInit {
+export class AddTaskComponent implements OnInit, OnDestroy {
   text: string
   day: string
   reminder: boolean = false;
@@ -19,12 +19,16 @@ export class AddTaskComponent implements OnInit {
   constructor(private uiService: UiService) {
     this.subscription = uiService.onToggle().subscribe(
       value => {
-        this.showAddTask = value;
+        this.showAddTask = value; ``
       }
     );
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onSubmit() {
